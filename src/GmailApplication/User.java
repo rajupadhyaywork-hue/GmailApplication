@@ -1,4 +1,4 @@
-package OOPS.EncapsulationGmailApplication;
+package GmailApplication;
 
 import java.util.ArrayList;
 

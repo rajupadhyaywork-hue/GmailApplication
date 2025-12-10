@@ -1,4 +1,4 @@
-package OOPS.EncapsulationGmailApplication;
+package GmailApplication;
 
 public class Mail {
     private String sender;
