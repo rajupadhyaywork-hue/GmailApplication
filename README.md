@@ -15,5 +15,10 @@ This project demonstrates encapsulation, classes, objects, and method interactio
 
 ---
 
+### 🔐 Login Feature
+
+A login mechanism will be added to handle user authentication in the next update.
+
+
 
 
