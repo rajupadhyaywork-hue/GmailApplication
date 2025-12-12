@@ -34,17 +34,44 @@ public class Gmail {
         //Get user email input
         String userMail = new Scanner(System.in).next();
 
+        // Email must not contain Space
+        if(userMail.contains(" ")){
+            System.out.println("\n Email must not contain spaces!!\n");
+            return;//stop login
+        }
         // Autocorrect id user doesn't type @gmail.com
         if (!(userMail.endsWith("@gmail.com"))) {
             userMail += "@gmail.com";
         }
 
-        System.out.print("Password : ");
-        String userPassword = new Scanner(System.in).next();
+
+        String password;
+        while(true) {
+            System.out.print("Password : ");
+            password = new Scanner(System.in).next();
+
+            //No space allowed
+            if(password.contains(" ")){
+                System.out.println("\n Password cannot contain Space! TRY AGAIN.\n");
+                continue;
+            }
+            // Validate password format
+            if (!password.matches("^[A-Za-z](?=.*[@#$%&!]).{5,}$")) {
+                System.out.println("""
+        ❌ INVALID PASSWORD! Follow these rules:
+           - Must start with an alphabet
+           - Must contain at least ONE special character (@,#,$,%,&,!)
+           - Must be at least 6 characters long
+        """);
+                continue;
+            }
+            // If valid break
+            break;
+        }
 
         //Validate user mail And password
         for (User user : userList) {
-            if (userMail.equals(user.getMail()) && userPassword.equals(user.getPassword())) {
+            if (userMail.equals(user.getMail()) && password.equals(user.getPassword())) {
                 homePage(user); //Navigate to home page
             }
         }
@@ -69,8 +96,13 @@ public class Gmail {
         outerLoop:
         for (; ; ) {
             System.out.print("Email : ");
-            mail = new Scanner(System.in).next();
+            mail = new Scanner(System.in).nextLine();
 
+            //Email must not contain spaces
+            if(mail.contains(" ")){
+                System.out.println("\n Email cannot contain spaces! TRY AGAIN.\n");
+                continue;//ask again
+            }
             //chack if email is already exists
             for (User ele : userList) {
                 if (mail.equals(ele.getMail())) {
@@ -105,17 +137,29 @@ public class Gmail {
         System.out.print("DOB :");
         String dob = new Scanner(System.in).next();
 
-        System.out.print("Password : ");
-        String password = new Scanner(System.in).next();
+        while(true) {
+            System.out.print("Password : ");
+            String password = new Scanner(System.in).next();
 
-        // Create new user object
-        User newUser = new User(firstName + " " + lastName, contact, mail, dob, password);
-
-        // Add to user list
-        userList.add(newUser);
-
+            //No space allowed
+            if(password.contains(" ")){
+                System.out.println("\n Password cannot contain Space! TRY AGAIN.\n");
+                continue;
+            }
+            // Validate password format
+            if (!password.matches("^[A-Za-z](?=.*[@#$%&!]).{5,}$")) {
+                System.out.println("""
+        ❌ INVALID PASSWORD! Follow these rules:
+           - Must start with an alphabet
+           - Must contain at least ONE special character (@,#,$,%,&,!)
+           - Must be at least 6 characters long
+        """);
+                continue;
+            }
+            // If valid break
+            break;
+        }
     }
-
     // Generate 3 random email suggestion
     private String[] suggestion(String name) {
         String[] suggestion = new String[3];
