@@ -19,7 +19,6 @@ This project demonstrates encapsulation, classes, objects, and method interactio
 
 A login mechanism will be added to handle user authentication in the next update.
 
------ GitHub Pull Request practice
 
 
 
