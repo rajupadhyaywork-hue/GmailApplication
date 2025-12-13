@@ -8,6 +8,8 @@ public class User {
     private String mail;
     private String dob;
     private String password;
+    private boolean isLocked = false;
+    private int loginAttempts = 0;
 
     private ArrayList<Mail> sendMail = new ArrayList<Mail>();
     private ArrayList<Mail> inboxMail = new ArrayList<Mail>();
@@ -22,23 +24,28 @@ public class User {
         this.dob = dob;
         this.password = password;
     }
-    public String getMail(){
+
+    public String getMail() {
         return this.mail;
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return this.password;
     }
 
     public String getName() {
         return this.name;
     }
-    public void sendMail(Mail send){
+
+    public void sendMail(Mail send) {
         sendMail.add(send);
     }
-    public void inboxMail(Mail inbox){
+
+    public void inboxMail(Mail inbox) {
         inboxMail.add(inbox);
     }
-    public void draftMail(Mail draft){
+
+    public void draftMail(Mail draft) {
         draftMail.add(draft);
     }
 
@@ -50,8 +57,37 @@ public class User {
     public ArrayList<Mail> getSendMail() {
         return this.sendMail;
     }
+
     public ArrayList<Mail> getDraftMail() {
         return this.draftMail;
     }
 
+    //Security -related methods
+    public boolean isLocked(){
+        return this.isLocked;
+    }
+    public void incrementLoginAttempts(){
+        loginAttempts++;
+        if(loginAttempts >=3){
+            isLocked = true;
+        }
+    }
+    public int getLoginAttempts(){
+        return loginAttempts;
+    }
+    public void resetLoginAttempts(){
+        loginAttempts =0;
+    }
+    public void unlockAccount(){
+        isLocked=false;
+        loginAttempts=0;
+    }
+
+    //Required for forgot password
+    public void setPassword(String password){
+        this.password = password;
+    }
+    public String getDob(){
+        return this.dob;
+    }
 }
