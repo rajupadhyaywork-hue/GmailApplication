@@ -90,4 +90,7 @@ public class User {
     public String getDob(){
         return this.dob;
     }
+    public ArrayList<Mail> getBinMail(){
+        return this.binMail;
+    }
 }
