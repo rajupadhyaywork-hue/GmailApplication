@@ -1,5 +1,6 @@
 package GmailApplication;
 
+import javax.lang.model.type.ArrayType;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -279,12 +280,13 @@ public class Gmail {
         for (; ; ) {
             System.out.println("\n *** HOME PAGE MODULE **** \n");
             System.out.println("1. Compose Mail");
-            System.out.println("2. Draft");
+            System.out.println("2. Draft Mail");
             System.out.println("3. Send Mails");
             System.out.println("4. Inbox Mail");
             System.out.println("5. All Mail");
             System.out.println("6. Starred Mail");
-            System.out.println("7. Logout");
+            System.out.println("7. Trash/Bin Mai1");
+            System.out.println("8. Logout");
             System.out.print("Enter an option: ");
             int option = new Scanner(System.in).nextInt();
             switch (option) {
@@ -294,8 +296,85 @@ public class Gmail {
                 case 4 -> inboxModule(user);
                 case 5 -> allMailModule(user);
                 case 6 -> starredMailModule(user);
-                case 7 -> logout(user);
+                case 7 -> transhModule(user);
+                case 8 -> logout(user);
             }
+        }
+    }
+
+    private void transhModule(User user) {
+        System.out.println("\n ** TRASH MODULE *** ");
+
+        ArrayList<Mail> binList = user.getBinMail();
+
+        if(binList.size()==0){
+            System.out.println("\n TRASH IS EMPTY \n");
+            return;
+        }
+        int srno = 1;
+
+        for(Mail mail : binList){
+            System.out.println("SRNO : "+srno++);
+            mail.getMailInfo();
+            System.out.println("---------------------------");
+        }
+        System.out.println("\n 1. Restore Mail");
+        System.out.println(" 2. Delete Forever");
+        System.out.println("3. Back");
+        System.out.print("Enter option :");
+        int opt = new Scanner(System.in).nextInt();
+
+        switch (opt){
+            case 1 -> restoreMail(user);
+            case 2 -> deleteForever(user);
+            case 3 ->{
+                return;
+            }
+        }
+    }
+
+    private void deleteForever(User user) {
+        ArrayList<Mail> binList = user.getBinMail();
+
+        if(binList.size() == 0){
+            System.out.println("\n TRASH IS EMPTY \n");
+            return;
+        }
+        System.out.print("Enter mail number to delete permanently : ");
+        int opt = new Scanner(System.in).nextInt();
+
+        if(opt<1 || opt>binList.size()){
+            System.out.println("\n INVALID SELECTION \n");
+            return;
+        }
+
+        //permanent deletion
+        binList.remove(opt-1);
+        System.out.println("\n MAIL DELETED PERMANENTLY ❌ \n");
+    }
+
+    private void restoreMail(User user) {
+        ArrayList<Mail> binList = user.getBinMail();
+
+        if(binList.size() == 0){
+            System.out.println("\n TRASH IS EMPTY \n ");
+            return;
+        }
+        System.out.print("Enter mail number to restore : ");
+        int opt = new Scanner(System.in).nextInt();
+
+        if(opt<1 || opt>binList.size()){
+            System.out.println("\n INVALID SECTION \n");
+            return;
+        }
+        Mail restoreMais = binList.remove(opt-1);
+
+        if(restoreMais.getReceiverMail().equals(user.getMail())){
+            user.inboxMail(restoreMais);
+            System.out.println("\n MAIL RESTORED TO INBOX \n");
+        }else{
+            user.sendMail(restoreMais);
+            System.out.println("\n MAIL RESTORED TO SEND \n");
         }
     }
 
@@ -306,7 +385,48 @@ public class Gmail {
     }
 
     private void starredMailModule(User user) {
-        System.out.println("\n COMING SOON \n");
+        System.out.println("\n ⭐ STARRED MAIL MODULE \n");
+
+        ArrayList<Mail> starList = user.getStarredMail();
+
+        if(starList.size()==0){
+            System.out.println("\n NO STARRED MAILS \n");
+            return;
+        }
+        int srno =1;
+        for(Mail mail : starList){
+            System.out.println("SRNO :"+srno++);
+            mail.getMailInfo();
+            System.out.println("---------------------");
+        }
+        System.out.println("\n1. Unstar Mail");
+        System.out.println("2. Back");
+        System.out.print("Enter Option :");
+        int opt = new Scanner(System.in).nextInt();
+
+        if(opt == 1){
+            unstarMail(user);
+        }
+    }
+    private void unstarMail(User user){
+        ArrayList<Mail> starList = user.getStarredMail();
+
+        if(starList.size()==0){
+            System.out.println("\n NO STARRED MAILS\n");
+            return;
+        }
+        System.out.print("Enter mail number to unstar : ");
+        int opt = new Scanner(System.in).nextInt();
+
+        if(opt<1||opt>starList.size()){
+            System.out.println("\n INVALID SELECTION \n");
+            return;
+        }
+        Mail mail =starList.get(opt-1);
+
+        //user handles actual removal
+        user.unstarMail(mail);
+        System.out.println("\n MAIL UNSTARRED ⭐❌ \n");
     }
 
     // Show both sent & inbox mails
@@ -327,19 +447,48 @@ public class Gmail {
             System.out.println("\n NO INBOX MAILS \n");
             return;
         }
+        int srno = 1;
         for (Mail ele : inboxList) {
+            System.out.println("SRNO : "+srno++);
             ele.getMailInfo(); // print mail info
             System.out.println("__________________________");
         }
         System.out.println("\n 1. Delete Mail");
-        System.out.println(" 2. Back");
+        System.out.println(" 2. Star Mail");
+        System.out.println(" 3. Back");
         System.out.print("Enter option :");
         int opt = new Scanner(System.in).nextInt();
 
         if(opt == 1){
             deleteMail(inboxList,user,"INBOX");
         }
+        else if(opt==2){
+            starMailFromList(user,inboxList);
+        }
     }
+
+    private void starMailFromList(User user, ArrayList<Mail> sourceList) {
+
+        if (sourceList.size() == 0) {
+            System.out.println("\n NO MAILS AVAILABLE \n");
+            return;
+        }
+
+        System.out.print("Enter mail number to star : ");
+        int opt = new Scanner(System.in).nextInt();
+
+        if (opt < 1 || opt > sourceList.size()) {
+            System.out.println("\n INVALID SELECTION \n");
+            return;
+        }
+
+        Mail mail = sourceList.get(opt - 1);
+
+        user.starMail(mail);
+
+        System.out.println("\n MAIL STARRED ⭐ \n");
+    }
+
 
     // show sent module
     private void sendModule(User user) {

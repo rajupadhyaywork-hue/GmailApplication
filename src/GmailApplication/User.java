@@ -93,4 +93,16 @@ public class User {
     public ArrayList<Mail> getBinMail(){
         return this.binMail;
     }
+    public void starMail(Mail mail){
+        if(!starredMail.contains(mail)){
+            starredMail.add(mail);
+        }
+    }
+    public void unstarMail(Mail mail){
+        starredMail.remove(mail);
+    }
+    public ArrayList<Mail> getStarredMail(){
+        return starredMail;
+    }
+
 }
