@@ -31,27 +31,18 @@ This application is designed to strengthen understanding of Encapsulation, Has-A
 6. View Trash
 7. Restore Mail from Trash
 8. Permanent Delete (Delete Forever)
-
-   ⭐ Star / Unstar Mail
+⭐ Star / Unstar Mail
 
 
 🧠 Core Concepts Used
-Object-Oriented Programming (OOP)
-Encapsulation
-Has-A Relationship
-Dependency Handling
-Java Collections (ArrayList)
-Menu-Driven Application Design
-Real-World Application Flow
+1. Object-Oriented Programming (OOP)
+2. Encapsulation
+3. Has-A Relationship
+4. Dependency Handling
+5. Java Collections (ArrayList)
+6. Menu-Driven Application Design
+9. Real-World Application Flow
 
-🏗️ Project Structure
-GmailApplication/
-│
-├── Gmail.java        // Main application flow & menus
-├── GmailDriver.java  // Entry point (main method)
-├── User.java         // User data & mail folders
-├── Mail.java         // Mail entity
-└── README.md
 
 🔄 Application Flow
 1. User creates an account
